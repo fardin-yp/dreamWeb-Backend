@@ -15,7 +15,7 @@ const server = http.createServer(app);
 const MongoStore = require('connect-mongo');
 const multiparty = require('connect-multiparty');
 const io = require("socket.io")(server ,{
-   cors:{origin:"http://localhost:3000"}
+   cors:{origin:"https://dream-web.runflare.run/"}
 });
 const bodyParserErrorHandler = require('express-body-parser-error-handler')
 
