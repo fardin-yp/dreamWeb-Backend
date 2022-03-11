@@ -15,7 +15,7 @@ const server = http.createServer(app);
 const MongoStore = require('connect-mongo');
 const multiparty = require('connect-multiparty');
 const io = require("socket.io")(server ,{
-   cors:{origin:"https://dream-web.runflare.run/"}
+   cors:{origin:"https://frontend-lake-seven.vercel.app"}
 });
 const bodyParserErrorHandler = require('express-body-parser-error-handler')
 
@@ -30,7 +30,7 @@ app.use(bodyParserErrorHandler());
    app.use(express.static("uploads"));
    app.use(cookieparser())
    app.use(cors({
-   origin:["https://dream-web.runflare.run"],
+   origin:["https://frontend-lake-seven.vercel.app"],
    credentials:true,
    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"],
    allowedHeaders: ["Content-Type", "Authorization"],
