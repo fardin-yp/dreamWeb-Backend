@@ -4,14 +4,14 @@ const mongoose = require('mongoose');
 const path = require('path');
 const cors = require("cors");
 const Sessions = require("./models/session/sessions");
-const http = require('http');
+const https = require('https');
 const app = express();
 const jwt = require('jsonwebtoken')
 const cookieparser = require("cookie-parser");
 const bodyParser = require("body-parser")
 require('dotenv').config();
 const session = require('express-session');
-const server = http.createServer(app);
+const server = https.createServer(app);
 const MongoStore = require('connect-mongo');
 const multiparty = require('connect-multiparty');
 const io = require("socket.io")(server ,{
