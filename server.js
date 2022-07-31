@@ -39,7 +39,7 @@ const io = require("socket.io")(server ,{
       ,"https://dreamweb-frontend-git-main-fardin-yp.vercel.app/"
       ,"https://api.zarinpal.com/pg/v4/payment/request.json"
       ,"https://sandbox.zarinpal.com"
-      ,"http://loaclhost:3000"],
+      ,"http://localhost:3000/"],
       credentials:true,
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"],
       allowedHeaders: ["Content-Type", "Authorization"],
