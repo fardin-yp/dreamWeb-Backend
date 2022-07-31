@@ -45,14 +45,6 @@ const io = require("socket.io")(server ,{
       allowedHeaders: ["Content-Type", "Authorization"],
    }))
 
-app.use(function (req, res, next) {
-res.setHeader('Access-Control-Allow-Origin', '*');
-res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-res.setHeader('Access-Control-Allow-Credentials', true);
-next();
-});
-
 const PORT = process.env.PORT || 27017;
 
 server.listen(PORT ,() => console.log('server connected on 8080'));
