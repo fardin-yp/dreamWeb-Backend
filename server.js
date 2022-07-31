@@ -32,7 +32,12 @@ const io = require("socket.io")(server ,{
 
    app.use(express.static("uploads"));
    app.use(cookieparser())
-   app.use(cors())
+   app.use(cors({
+      origin:["http://localhost:3000","https://api.zarinpal.com/pg/v4/payment/request.json","https://sandbox.zarinpal.com"],
+      credentials:true,
+      methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"],
+      allowedHeaders: ["Content-Type", "Authorization"],
+   }))
 
 const PORT = process.env.PORT || 27017;
 
