@@ -33,7 +33,12 @@ const io = require("socket.io")(server ,{
    app.use(express.static("uploads"));
    app.use(cookieparser())
    app.use(cors({
-      origin:["https://dreamweb-keohppk9l-fardin-yp.vercel.app/","https://api.zarinpal.com/pg/v4/payment/request.json","https://sandbox.zarinpal.com"],
+      origin:[
+       "https://dreamweb-frontend-j0shgyw59-fardin-yp.vercel.app/"
+      ,"https://dreamweb-git-main-fardin-yp.vercel.app/"
+      ,"https://dreamweb-frontend-git-main-fardin-yp.vercel.app/"
+      ,"https://api.zarinpal.com/pg/v4/payment/request.json"
+      ,"https://sandbox.zarinpal.com"],
       credentials:true,
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"],
       allowedHeaders: ["Content-Type", "Authorization"],
