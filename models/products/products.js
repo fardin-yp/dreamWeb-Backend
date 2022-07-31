@@ -15,10 +15,10 @@ const comments = new Schema({
 const productModel = new mongoose.Schema({
     name:{type:String ,required:true},
     image:{type:String ,required:true},
-    price:{type:String ,required:true},
+    price:{type:String },
     off:{type:Number },
     category:{type:String ,reauired:true},
-    link:{type:String , required:true},
+    link:{type:String },
     Property:{type:String},
     comments:[comments],
     description:{type:String},

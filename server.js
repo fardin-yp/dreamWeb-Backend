@@ -4,24 +4,27 @@ const mongoose = require('mongoose');
 const path = require('path');
 const cors = require("cors");
 const Sessions = require("./models/session/sessions");
-const https = require('https');
+const https = require("http");
 const app = express();
 const jwt = require('jsonwebtoken')
 const cookieparser = require("cookie-parser");
-const bodyParser = require("body-parser")
+const bodyParser = require("body-parser");
 require('dotenv').config();
-const session = require('express-session');
 const server = https.createServer(app);
-const MongoStore = require('connect-mongo');
 const multiparty = require('connect-multiparty');
-const io = require("socket.io")(server ,{
-   cors:{origin:"https://frontend-lake-seven.vercel.app"}
-});
-const bodyParserErrorHandler = require('express-body-parser-error-handler')
-
+const bodyParserErrorHandler = require('express-body-parser-error-handler');
+app.use(express.static(__dirname + '/static'));
+const Users = require('./models/userModel');
+const UsersAuth = require('./Auth/users');
+var nodemailer = require('nodemailer');
+const Sells = require("./models/sells/sells");
+const axios = require("axios");
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 app.use(bodyParserErrorHandler());
+const io = require("socket.io")(server ,{
+   cors:{origin:"*"}
+})
 
    const MuiltiPartyMiddleware = multiparty({uploadDir:"../images"});
    app.use(express.json());
@@ -30,63 +33,11 @@ app.use(bodyParserErrorHandler());
    app.use(express.static("uploads"));
    app.use(cookieparser())
    app.use(cors({
-   origin:["https://frontend-lake-seven.vercel.app"],
+   origin:["http://localhost:3000","https://api.zarinpal.com/pg/v4/payment/request.json","https://sandbox.zarinpal.com"],
    credentials:true,
    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"],
    allowedHeaders: ["Content-Type", "Authorization"],
 }))
-
-let users = []
-let OnlineUsers = []
-
-const addUser = (userId , socketId) => {
-   !users.some(res => res.userId === userId) && 
-   users.push({userId ,socketId})
-}
-const removeUser = (socketId) => {
-   users = users.filter(user => user.socketId !== socketId)
-}
-const getUser = (userId) => {
-  return users.find(user => user.userId === userId)
-}
-const addOnlineUsers = (socketId) => {
-   !OnlineUsers.some(res => res.socketId === socketId) && 
-   OnlineUsers.push({socketId})
-}
-const removeOnlineUsers = (socketId) => {
-   OnlineUsers = OnlineUsers.filter(user => user.socketId !== socketId)
-}
-// connect user to chat
-io.on('connection', (socket) => {
-   // take userId socketId from user
-   addOnlineUsers(socket.id);
-
-   socket.on("addUser" ,(userId) => {
-      if(userId){
-         addUser(userId , socket.id);
-      }
-      io.emit("getUsers" , users);
-      io.emit("getOnlineUsers" , OnlineUsers);
-   })
-   // send and get Message
-socket.on("sendMessage" , ({senderId ,receiverId  ,text}) => {
-   const user = getUser(receiverId);
-if(user !== undefined && user.socketId){
-   io.to(user.socketId).emit("getMessage", {
-      senderId,
-      text
-     })
-}
-  })
-  // remove user to chat
-socket.on("disconnect" , () => {
-   removeUser(socket.id);
-   removeOnlineUsers(socket.id);
-   io.emit("getUsers" , users);
-   io.emit("getOnlineUsers" , OnlineUsers);
-})
-
-});
 
 const PORT = process.env.PORT || 27017;
 
@@ -108,7 +59,7 @@ let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
 // current year
 let year = date_ob.getFullYear();
 
- const monthName = date_ob.toLocaleString('en-us',{month:'short'})
+const monthName = date_ob.toLocaleString('en-us',{month:'short'})
 
    try{
       if(!session){
@@ -159,14 +110,36 @@ app.post('/upload', MuiltiPartyMiddleware, (req, res) =>{
   }
 })
 
+let OnlineUsers = []
+
+const addOnlineUsers = (socketId) => {
+   !OnlineUsers.some(res => res.socketId === socketId) && 
+   OnlineUsers.push({socketId})
+}
+const removeOnlineUsers = (socketId) => {
+   OnlineUsers = OnlineUsers.filter(user => user.socketId !== socketId)
+}
+// connect user to site
+io.on('connection', (socket) => {
+// take userId socketId from user
+addOnlineUsers(socket.id);
+
+socket.on("addUser" ,() => {
+ io.emit("getOnlineUsers" , OnlineUsers);
+})
+  // remove user to site
+socket.on("disconnect" , () => {
+removeOnlineUsers(socket.id);
+io.emit("getOnlineUsers" , OnlineUsers);
+})
+});
 
 app.use('/auth' ,require('./routes/admin/auth'));
 app.use('/authentication' ,require('./routes/usersAuth'));
 app.use('/allRoutes' ,require('./routes/allRoutes'));
 app.use('/adminRoute' ,require('./routes/admin/adminRoute'));
-app.use('/message' ,require('./routes/chat/messages'));
-app.use('/conversation' ,require('./routes/chat/conversation'));
 app.use('/comment' ,require('./routes/comment'));
+app.use("/sell" ,require("./routes/sells"))
 
 
 

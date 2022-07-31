@@ -1,16 +1,20 @@
 const mongoose = require('mongoose');
 
 const exSchema = mongoose.Schema({
-    name:{type:String ,required:true},
+    buyer:{type:String ,required:true},
     price:{type:String ,required:true},
+    product:{},
     email:{type:String ,required:true},
-    phone:{type:String ,required:true},
-    information:{type:Array ,require:true},
-    des:{type:String ,required:true},
-    timestamp:{type:String},
-    site:{type:String},
-    date:{type:String ,required:true}
-})
+    description:{type:String},
+    number:{type:String ,required:true},
+    meliCode:{type:String ,required:true},
+    date:{type:String ,required:true},
+    month:{type:String ,required:true},
+    year:{type:String ,required:true},
+    confirmation:{type:Boolean ,required:true},
+    Tracking:{type:Number ,required:true},
+    category:{type:String ,required:true}
+},{timestamps:true})
 
 const Sells = mongoose.models.sells || mongoose.model('sells' , exSchema);
 

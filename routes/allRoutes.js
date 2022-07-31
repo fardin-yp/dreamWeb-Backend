@@ -48,13 +48,13 @@ route.post('/exclusive' ,async (req ,res) => {
     if(!name){
         return res.json({errMessage:"فیلد  نام الزامی است" ,err:"name"})
     }
-    const existNumber = await Exclusive.find({number:number});
-    if( existNumber.length > 2){
+    const existNumber = await Exclusive.findOne({number:number});
+    if( existNumber ){
         return res.json({errMessage:"درخواست شما قبلا ارسال شده است منتظر تایید بمانید"})
     }
-    const existemail = await Exclusive.find({email:email});
+    const existemail = await Exclusive.findOne({email:email});
 
-    if( existemail.length > 2){
+    if( existemail ){
       return res.json({errMessage:"درخواست شما قبلا ارسال شده است منتظر تایید بمانید"})
   }
     const secret = "6LfMd88dAAAAAJH3mPde_pSETx_RXS8pjDzHsnY3";
@@ -103,7 +103,7 @@ route.post('/consulting' ,async (req ,res) => {
     if(!name){
         return res.json({errMessage:"فیلد نام و نام خانوادگی الزامی است" ,err:"name"})
     }
-    const exist = Exclusive.find({number:number});
+    const exist = await Consalting.find({number:number});
     if(exist){
         return res.json({errMessage:"درخواست شما قبلا ارسال شده است منتظر تایید بمانید"})
     }
@@ -458,25 +458,7 @@ route.get('/namad', cache(300), async (req ,res) => {
     }
    })
 
-   route.post("/sells" , async (req,res) => {
-
-      const date = new Date().toLocaleDateString("fa-IR" ,{timeZone:"Asia/Tehran" } )
-      var d = new Date(year, month, day, hour, minute, second,)
-
-      const newSell = new Sells({
-         name:req.body.name,
-         price:req.body.price,
-         email:req.body.email,
-         phone:req.body.phone,
-         information:req.body.information,
-         des:req.body.des,
-         timestamp:date,
-         site:req.body.site,
-         date:d
-      })
-   });
-
-   route.get("/laws" ,UsersAuth ,cache(300) , async (req,res) => {
+   route.get("/laws" ,cache(300) , async (req,res) => {
       try{
           const findPost = await Laws.find();
           res.json(findPost)

@@ -16,9 +16,8 @@ const Consalting = require("../../models/consalting");
 const Exclusive = require("../../models/Exclusive/exclusive");
 const Sessions = require("../../models/session/sessions");
 const Laws = require("../../models/law/law");
-const Conversation = require("../../models/chat/conversation");
-const Message = require("../../models/chat/message");
 const Links = require("../../models/Links/Links");
+const Sells = require("../../models/sells/sells");
 
 const storage = multer.diskStorage({
     destination:(req , file ,callback) => {
@@ -33,27 +32,44 @@ const storage = multer.diskStorage({
   
 
   AdminRoute.post("/product",AdminAuth ,upload.single("image","file") ,async (req , res) => {
-    const date = new Date().toLocaleDateString("fa-IR" ,{timeZone:"Asia/Tehran" } )
-
-    const newPost = new Products({
-      name:req.body.name,
-      image:req.file.originalname,
-      price:req.body.price,
-      off:req.body.off,
-      category:req.body.category,
-      link:req.body.link,
-      Property:req.body.Property,
-      description:req.body.description,
-      timestamp:date
-    })
+    const date = new Date().toLocaleDateString("fa-IR" ,{timeZone:"Asia/Tehran" } );
     
     try {
 
+      const exist = await Products.findOne({name:req.body.name})
+
+      if(exist){
+        return res.json({errMessage:"این پروژه وجود دارد !"})
+      }
+
+      if(!req.body.name){
+       return res.json({errMessage:"نام پروژه الزامیست !"})
+      }
+      if(!req.body.category){
+        return res.json({errMessage:"دسته بندی الزامیست !"})
+       }
+       if(!req.file){
+        return res.json({errMessage:"عکس اصلی پروژه الزامی است !"})
+       }
+
+
+     if(!exist) {
+      const newPost = new Products({
+        name:req.body.name,
+        image:req.file.originalname,
+        price:req.body.price,
+        off:req.body.off,
+        category:req.body.category,
+        link:req.body.link,
+        Property:req.body.Property,
+        description:req.body.description,
+        timestamp:date
+      })
       const savedPost = await newPost.save();
       res.json({Message:"پست با موفقیت ارسال شد!"})
-  
+    }
     }catch(err){
-     res.send(true)
+     res.send({errMessage:"پروژه ارسال نشد  !"})
     }
     });
 
@@ -62,6 +78,7 @@ const storage = multer.diskStorage({
       const date = new Date().toLocaleDateString("fa-IR" ,{timeZone:"Asia/Tehran" } )
        
           try {
+
               const newExclusive = new Article({
                   title:req.body.title,
                   image:req.file && req.file.originalname,
@@ -180,8 +197,9 @@ const storage = multer.diskStorage({
         const allSeo = await Seo.find();
         const allSessions = await Sessions.find();
         const laws = await Laws.find()
+        const sells = await Sells.find()
       
-         res.json({allProducts ,allUsers , allArticles ,allSeo ,allSessions ,laws})
+         res.json({allProducts ,allUsers , allArticles ,allSeo ,allSessions ,laws ,sells})
 
         }catch(err){
           res.json({errMessage:"درخواست ارسال نشد لطفا مجدد تلاش کنید!"})
@@ -425,19 +443,6 @@ AdminRoute.post('/removeComment/:type' ,AdminAuth ,async (req,res) => {
       }
       });
 
-      AdminRoute.post('/deleteChat' ,AdminAuth , async (req,res) => {
-        const { conversationId , messages} = req.body;
-        try{
-         await Conversation.findByIdAndRemove(conversationId);
-         await Message.deleteMany({conversationId : messages});
-
-         res.json("گفتگو حذف شد !")
-  
-        }catch(err){
-          res.json("متاسفانه گفتگو حذف نشد !")
-        }
-  
-       });
 
        AdminRoute.post('/links' ,AdminAuth , async (req,res) => {
 

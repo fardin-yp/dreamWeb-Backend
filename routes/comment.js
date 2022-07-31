@@ -127,6 +127,7 @@ messagesRoute.put('/ProductComment' , async (req,res) => {
        if(token){
          const verified = jwt.verify(token ,process.env.JWT_SECRET);
          if(verified.email){
+            
          var post = {
             name:'Admin',
             email:'Admin@gmail.com',
