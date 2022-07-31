@@ -32,10 +32,7 @@ const io = require("socket.io")(server ,{
 
    app.use(express.static("uploads"));
    app.use(cookieparser())
-   app.use(cors({
-   origin:["*"],
-   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"],
-}))
+   app.use(cors())
 
 const PORT = process.env.PORT || 27017;
 
