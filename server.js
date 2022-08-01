@@ -47,6 +47,7 @@ const io = require("socket.io")(server , {
        "https://dreamweb-frontend-j0shgyw59-fardin-yp.vercel.app/"
       ,"https://dreamweb-frontend-git-main-fardin-yp.vercel.app/"
       ,"https://dreamweb-frontend-fardin-yp.vercel.app/"
+      ,"dreamweb-frontend.vercel.app"
       ,"https://api.zarinpal.com/pg/v4/payment/request.json"
       ,"https://sandbox.zarinpal.com"
       ,"http://loaclhost:3000"
