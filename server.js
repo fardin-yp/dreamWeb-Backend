@@ -35,8 +35,6 @@ const io = require("socket.io")(server ,{
    app.use(cors({
       origin:"https://dream-web-front-end.vercel.app",
       credentials:true,
-      methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"],
-      allowedHeaders: ["Content-Type", "Authorization"],
    }))
 
 const PORT = process.env.PORT || 27017;
