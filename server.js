@@ -14,11 +14,6 @@ const server = https.createServer(app);
 const multiparty = require('connect-multiparty');
 const bodyParserErrorHandler = require('express-body-parser-error-handler');
 app.use(express.static(__dirname + '/static'));
-const Users = require('./models/userModel');
-const UsersAuth = require('./Auth/users');
-var nodemailer = require('nodemailer');
-const Sells = require("./models/sells/sells");
-const axios = require("axios");
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 app.use(bodyParserErrorHandler());
@@ -33,7 +28,7 @@ const io = require("socket.io")(server ,{
    app.use(express.static("uploads"));
    app.use(cookieparser())
    app.use(cors({
-      origin:["http://localhost:3000","https://dreamweb-frontend.vercel.app","https://api.zarinpal.com/pg/v4/payment/request.json","https://sandbox.zarinpal.com"],
+      origin:"*",
       credentials:true,
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"],
       allowedHeaders: ["Content-Type", "Authorization"],
