@@ -32,10 +32,6 @@ const io = require("socket.io")(server ,{
 
    app.use(express.static("uploads"));
    app.use(cookieparser())
-   app.use(cors({
-      origin:"https://dream-web-front-end.vercel.app",
-      credentials:true,
-   }))
 
 const PORT = process.env.PORT || 27017;
 
