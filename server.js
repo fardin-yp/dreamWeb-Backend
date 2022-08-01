@@ -23,17 +23,7 @@ app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
 app.use(bodyParserErrorHandler());
 const io = require("socket.io")(server , {
-   origins: ["https://dreamweb-frontend-j0shgyw59-fardin-yp.vercel.app/"],
- 
-   handlePreflightRequest: (req, res) => {
-     res.writeHead(200, {
-       "Access-Control-Allow-Origin": "https://example.com",
-       "Access-Control-Allow-Methods": "GET,POST",
-       "Access-Control-Allow-Headers": "my-custom-header",
-       "Access-Control-Allow-Credentials": true
-     });
-     res.end();
-   }
+   origins: ["*"],
  })
 
    const MuiltiPartyMiddleware = multiparty({uploadDir:"../images"});
@@ -43,15 +33,7 @@ const io = require("socket.io")(server , {
    app.use(express.static("uploads"));
    app.use(cookieparser())
    app.use(cors({
-      origin:[
-       "https://dreamweb-frontend-j0shgyw59-fardin-yp.vercel.app/"
-      ,"https://dreamweb-frontend-git-main-fardin-yp.vercel.app/"
-      ,"https://dreamweb-frontend-fardin-yp.vercel.app/"
-      ,"dreamweb-frontend.vercel.app"
-      ,"https://api.zarinpal.com/pg/v4/payment/request.json"
-      ,"https://sandbox.zarinpal.com"
-      ,"http://loaclhost:3000"
-   ],
+      origin:["*"],
       credentials:true,
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"],
    }))
