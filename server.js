@@ -11,19 +11,17 @@ const cookieparser = require("cookie-parser");
 require('dotenv').config();
 const server = https.createServer(app);
 const multiparty = require('connect-multiparty');
-
+const io = require("socket.io")(server ,{
+   cors:{origin:"https://dream-web-front-end.vercel.app"}
+})
 app.use(cors({
-   origin:"https://dream-web-front-end.vercel.app",
+   origin:["https://dream-web-front-end.vercel.app","http://localhost:3000"],
    credentials:true,
    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"],
-   allowedHeaders: ["Content-Type", "Authorization"],
 }))
 
 app.use(express.static(__dirname + '/static'));
 
-const io = require("socket.io")(server ,{
-   cors:{origin:"*"}
-})
 
    const MuiltiPartyMiddleware = multiparty({uploadDir:"../images"});
    app.use(express.json());
@@ -139,10 +137,3 @@ app.use("/sell" ,require("./routes/sells"))
 
 
    
-// "https://dreamweb-frontend-j0shgyw59-fardin-yp.vercel.app/"
-// ,"https://dreamweb-frontend-git-main-fardin-yp.vercel.app/"
-// ,"https://dreamweb-frontend-fardin-yp.vercel.app/"
-// ,"https://dreamweb-frontend.vercel.app"
-// ,"https://api.zarinpal.com/pg/v4/payment/request.json"
-// ,"https://sandbox.zarinpal.com"
-// ,"http://loaclhost:3000"
