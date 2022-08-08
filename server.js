@@ -11,14 +11,19 @@ const cookieparser = require("cookie-parser");
 require('dotenv').config();
 const server = https.createServer(app);
 const multiparty = require('connect-multiparty');
-const io = require("socket.io")(server ,{
-   cors:{origin:"https://dream-web-front-end.vercel.app"}
-})
-app.use(cors({
-   origin:["https://dream-web-front-end.vercel.app","http://localhost:3000"],
-   credentials:true,
-   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"],
-}))
+
+  app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+    );
+  if (req.method == "OPTIONS") {
+    res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
+    return res.status(200).json({});
+  }
+  next();
+});
 
 app.use(express.static(__dirname + '/static'));
 
