@@ -9,28 +9,13 @@ const app = express();
 const jwt = require('jsonwebtoken')
 const cookieparser = require("cookie-parser");
 require('dotenv').config();
-const server = https.createServer(app);
 const multiparty = require('connect-multiparty');
 
-  app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header(
-      "Access-Control-Allow-Headers",
-      "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-    );
-  if (req.method == "OPTIONS") {
-    res.header("Access-Control-Allow-Methods", "PUT, POST, PATCH, DELETE, GET");
-    return res.status(200).json({});
-  }
-  next();
-});
-
-const bodyParser = require("body-parser");
-  
-// Configuring express to use body-parser
-// as middle-ware
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(cors({
+   origin:["https://dream-web-front-end.vercel.app","http://localhost:3000"],
+   credentials:true,
+   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"],
+}))
 
 app.use(express.static(__dirname + '/static'));
 
@@ -44,7 +29,7 @@ app.use(express.static(__dirname + '/static'));
 
 const PORT = process.env.PORT || 27017;
 
-server.listen(PORT ,() => console.log('server connected on 8080'));
+app.listen(PORT ,() => console.log('server connected on 8080'));
 mongoose.connect(process.env.MONGODB_URI , {useNewUrlParser:true ,useUnifiedTopology:true} , err => {
    if(err) return console.log(err);
    console.log('mongodb connected')
