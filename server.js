@@ -25,6 +25,13 @@ const multiparty = require('connect-multiparty');
   next();
 });
 
+const bodyParser = require("body-parser");
+  
+// Configuring express to use body-parser
+// as middle-ware
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
 app.use(express.static(__dirname + '/static'));
 
 
@@ -106,29 +113,6 @@ app.post('/upload', MuiltiPartyMiddleware, (req, res) =>{
   }
 })
 
-let OnlineUsers = []
-
-const addOnlineUsers = (socketId) => {
-   !OnlineUsers.some(res => res.socketId === socketId) && 
-   OnlineUsers.push({socketId})
-}
-const removeOnlineUsers = (socketId) => {
-   OnlineUsers = OnlineUsers.filter(user => user.socketId !== socketId)
-}
-// connect user to site
-io.on('connection', (socket) => {
-// take userId socketId from user
-addOnlineUsers(socket.id);
-
-socket.on("addUser" ,() => {
- io.emit("getOnlineUsers" , OnlineUsers);
-})
-  // remove user to site
-socket.on("disconnect" , () => {
-removeOnlineUsers(socket.id);
-io.emit("getOnlineUsers" , OnlineUsers);
-})
-});
 
 app.use('/auth' ,require('./routes/admin/auth'));
 app.use('/authentication' ,require('./routes/usersAuth'));
