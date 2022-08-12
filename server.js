@@ -10,6 +10,7 @@ const jwt = require('jsonwebtoken')
 const cookieparser = require("cookie-parser");
 require('dotenv').config();
 const multiparty = require('connect-multiparty');
+const bodyParser = require("body-parser")
 
 app.use(cors()); // <---- use cors middleware
 
