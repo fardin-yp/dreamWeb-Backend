@@ -12,7 +12,7 @@ require('dotenv').config();
 const multiparty = require('connect-multiparty');
 
 app.use(cors({
-   origin:["https://dream-web-front-end.vercel.app","https://dream-web-fardin.vercel.app","http://localhost:3000"],
+   origin:["https://dream-web-front-end.vercel.app","https://dreamweb-api.vercel.app","https://dream-web-fardin.vercel.app","http://localhost:3000"],
    credentials:true,
    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"],
 }))
